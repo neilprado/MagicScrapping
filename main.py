@@ -1,8 +1,10 @@
 import Three4One
+import data
+
+
 def main():
-    searches = ["Warhammer", "Lord of Rings", "The Lost Caverns of Ixalan",
-                "Commander Masters", "Phyrexia: All Will be One", "The Brothers' War",
-                "Innistrad", "Wilds of Eldraine", "March of the Machine"]
-    Three4One.scrapping(searches)
+    sealed_products = data.sealed_products_three_4_one()
+    sealed, prices = Three4One.scrapping(sealed_products)
+    Three4One.createExcelFile(sealed, prices)
 
 main()
