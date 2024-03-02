@@ -4,8 +4,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
-import openpyxl
-
 
 def config():
     driver = webdriver.Safari()
@@ -28,18 +26,18 @@ def scrapping(searches):
 
         search_input.send_keys(Keys.RETURN)
 
-        time.sleep(5)
+        time.sleep(7)
 
         product_items = driver.find_elements(By.CSS_SELECTOR, ".product-item")
 
         for item in product_items:
             title = item.find_element(By.CSS_SELECTOR, ".product-item__title").text
-            if "MtG Advent Calendar" not in title and "Sol Ring" not in title:
-                items.append(title)
+            if search == title:
+                items.append(search)
                 prices.append(extract_euro_price(item.find_element(By.CSS_SELECTOR, ".price").text))
+                break
 
     finishing(driver)
-
     return items, prices
 
 
@@ -57,16 +55,3 @@ def extract_euro_price(price):
     else:
         return None
 
-
-def createExcelFile(items, prices, filename="ThreeForOne.xlsx"):
-    workbook = openpyxl.Workbook()
-    sheet = workbook.active
-
-    sheet['A1'] = 'Item'
-    sheet['B1'] = 'Price'
-
-    for item in range(len(items)):
-        sheet.cell(row=item + 2, column=1, value=items[item])
-        sheet.cell(row=item + 2, column=2, value=prices[item])
-
-    workbook.save(filename)

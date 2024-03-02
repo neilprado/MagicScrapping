@@ -1,10 +1,13 @@
+import LigaMagic
 import Three4One
-import data
+import products
+import utils
 
 
 def main():
-    sealed_products = data.sealed_products_three_4_one()
-    sealed, prices = Three4One.scrapping(sealed_products)
-    Three4One.createExcelFile(sealed, prices)
+     three_sealed, three_prices = Three4One.scrapping(products.translate_product(products.sealed_products, "en"))
+     liga_sealed, liga_prices = LigaMagic.liga_sealed_scrapping(products.translate_product(three_sealed, "pt"))
+
+     utils.createExcelFile(three_sealed, three_prices, liga_sealed, liga_prices, 5.37)
 
 main()
